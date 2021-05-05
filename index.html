@@ -1,0 +1,111 @@
+<html>
+<head>
+<title>zombie</title>
+
+<style>
+#zombie_map {
+        height:100%;
+	width:100%;
+	left:0;
+	position: absolute;
+	top: 0;
+	background-color: grey;
+}
+
+</style>
+
+</head>
+
+<body>
+my zombie map
+
+<div id="zombie_map"></div>
+<script>
+       var zombie_map;
+
+	var data = `-33.32719032426012 115.63174099867426 zombie.png 
+-33.32810469273079 115.63156397287928 zombie.png 
+-33.32741891727735 115.63309283201777 zombie.png 
+-33.32757579449119 115.63352198546015 zombie.png 
+-33.32776852896724 115.63288898413263 zombie.png 
+-33.32789403025735 115.6331518406161 weapons.png 
+-33.32749063261015 115.63323767130457 weapons.png 
+-33.32714998425365 115.63185365145289 weapons.png 
+-33.32803746008184 115.63164443914972 weapons.png 
+-33.32709619754931 115.63243837301813 weapons.png 
+-33.32699758850511 115.63344688360773 hospital.png 
+-33.32705137527034 115.63229889814936 hospital.png 
+-33.32823019353669 115.63197703306757 hospital.png 
+-33.32820778269176 115.63306600992762 hospital.png 
+-33.326589704455024 115.630973886896 zombie.png 
+-33.32618630076929 115.63104898874842 hospital.png 
+-33.32679588783986 115.63120992128931 weapons.png 
+-33.32683174577003 115.63136012499415 weapons.png 
+-33.326876568161985 115.63145668451868 weapons.png 
+-33.32683174577003 115.63166053240381 weapons.png`;
+
+var markers = data.split("\n");
+var all_markers=[];
+var count =0;
+
+	function initMap() {
+
+	zombie_map = new google.maps.Map(document.getElementById('zombie_map'), {
+	zoom: 18,
+	center: {lat: -33.327617, lng: 115.633066}
+
+	});
+
+	if (navigator.geolocation) {
+navigator.geolocation.watchPosition(set_my_position);
+}
+else{
+	alert("geolocation doesn't work in your browser");
+}
+
+function set_my_position(position) {
+
+var pos = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+consol.log(pos);
+
+
+
+var marker = new google.maps.marker({
+		position: pos,
+		icon: "player.png",
+		map: zombie_map
+
+		});
+}
+	if (count<1) {
+	for (var i=0; i< markers.length; i++) {
+	var marker_data = markers[i].trim().split(" ");
+	var latitude = marker_data[0];
+	var longitude = marker_data[1];
+	var emoji = marker_data[2];
+
+	var marker_position = new google.maps.LatLng(latitude, longitude);
+	var marker = new google.maps.Marker({
+	position: marker_position,
+	icon: emoji,
+	map:zombie_map
+	});
+
+
+
+	all_markers.push(marker);
+
+}	
+count++;
+
+}
+}
+</script>
+
+<script async defer
+   src ="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMxjg6NI6CMExypKBMO3c4cN8cqPpNCkA&callback=initMap">
+ </script>
+
+</body>
+
+</html>
